@@ -1,0 +1,67 @@
+{
+	// Cấu hình Cloudflare Worker cho website rèm màn (OpenNext). Tài liệu: https://opennext.js.org/cloudflare
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "rem-man-kim-dung",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2026-06-01",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "rem-man-kim-dung"
+		}
+	],
+	// Database D1 (SQLite) đã tạo trên Cloudflare: rem-man-kim-dung.
+	// Code chỉ đọc binding "DB" → khi đổi database thì sửa database_name/database_id ở đây, KHÔNG thêm binding mới.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "rem-man-kim-dung",
+			"database_id": "92b35937-70b1-4ab0-acba-def3f227dc19",
+			"migrations_dir": "migrations",
+			// true: `npm run dev` / `npm run preview` dùng D1 THẬT trên Cloudflare (cần `npx wrangler login`,
+			// đã chạy `npm run db:migrate:remote` + `npm run db:seed:remote`). false: dùng bản giả lập trong .wrangler/state.
+			"remote": false
+		}
+	],
+	// Bucket R2 chứa ảnh upload đã tạo trên Cloudflare: rem-man-kim-dung.
+	// Code chỉ đọc binding "R2_BUCKET" → khi đổi bucket thì sửa bucket_name ở đây, KHÔNG thêm binding mới.
+	"r2_buckets": [
+		{
+			"binding": "R2_BUCKET",
+			"bucket_name": "rem-man-kim-dung",
+			// true: upload ảnh vào bucket R2 THẬT khi chạy local (đồng bộ với R2_PUBLIC_URL trong .dev.vars)
+			"remote": false
+		}
+	],
+	// Tối ưu ảnh cho next/image bằng Cloudflare Images
+	"images": {
+		"binding": "IMAGES"
+	},
+	// Giới hạn gửi form công khai: 5 lần / 60 giây cho mỗi IP (tính theo từng PoP của Cloudflare)
+	"ratelimits": [
+		{
+			"name": "LEAD_RATE_LIMITER",
+			"namespace_id": "1001",
+			"simple": {
+				"limit": 5,
+				"period": 60
+			}
+		}
+	],
+	// Biến môi trường không bí mật của Worker (bí mật như AUTH_SECRET đặt bằng `wrangler secret put`).
+	// R2_PUBLIC_URL: URL công khai của bucket (https://pub-xxxx.r2.dev hoặc custom domain); để trống → ảnh đi qua /api/media/...
+	"vars": {
+		"R2_PUBLIC_URL": ""
+	},
+	"observability": {
+		"enabled": true
+	}
+}
