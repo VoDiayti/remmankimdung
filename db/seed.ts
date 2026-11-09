@@ -20,7 +20,7 @@ const daysAgo = (d: number) => new Date(now.getTime() - d * 86_400_000);
 const FOUNDED_YEAR = 2018;
 
 /** ID ổn định theo nhãn (dạng cuid 25 ký tự) */
-const sid = (label: string) => `c${createHash("sha256").update(`niji-rem-seed:${label}`).digest("hex").slice(0, 24)}`;
+const sid = (label: string) => `c${createHash("sha256").update(`remmankimdung-seed:${label}`).digest("hex").slice(0, 24)}`;
 const json = (list: string[]) => JSON.stringify(list);
 const stamps = (createdAt: Date = now) => ({ createdAt, updatedAt: now });
 
@@ -52,19 +52,19 @@ async function main() {
   insert("Setting", [
     {
       id: 1,
-      companyName: "Công ty TNHH Rèm Màn Niji",
-      shortName: "Rèm Niji",
+      companyName: "Công ty TNHH Rèm Màn Kim Dung",
+      shortName: "Rèm Kim Dung",
       slogan: "Đẹp từng ô cửa – Bền từng đường may",
       logo: "/logo.svg",
       taxCode: "0316 123 456",
       foundedYear: FOUNDED_YEAR,
       hotline: "0909 123 456",
       zalo: "0909123456",
-      email: "lienhe@remniji.vn",
+      email: "lienhe@remmankimdung.vn",
       address: "123 Nguyễn Văn Linh, P. Tân Phong, Quận 7, TP. Hồ Chí Minh",
       mapEmbedUrl: null,
       workingHours: "8:00 – 19:00, Thứ 2 – Chủ nhật",
-      facebook: "https://facebook.com/remniji",
+      facebook: "https://facebook.com/remmankimdung",
       youtube: null,
       tiktok: null,
       messenger: null,
@@ -73,13 +73,13 @@ async function main() {
       statProjects: 1200,
       statProducts: 500,
       aboutShort:
-        "Rèm Niji là xưởng may và showroom rèm cửa tại TP. Hồ Chí Minh, chuyên rèm vải, rèm cuốn, rèm cầu vồng, rèm roman, rèm sáo gỗ – nhôm cho căn hộ, nhà phố, văn phòng và khách sạn. Chúng tôi đo đạc tận nơi miễn phí, báo giá theo mét vuông rõ ràng và lắp đặt trong 3 – 5 ngày.",
-      aboutContent: `<h2>Câu chuyện Rèm Niji</h2><p>Thành lập năm ${FOUNDED_YEAR} từ một xưởng may nhỏ tại Quận 7, Rèm Niji đã thi công hơn 1.200 công trình lớn nhỏ: căn hộ chung cư, biệt thự, văn phòng, khách sạn và trường học trên khắp TP. Hồ Chí Minh và các tỉnh lân cận.</p><h2>Vì sao khách hàng chọn Niji</h2><ul><li><strong>Giá tận xưởng:</strong> tự may, tự lắp, không qua trung gian.</li><li><strong>Hơn 500 mẫu vải</strong> nhập khẩu Hàn Quốc, Đài Loan, Bỉ và Việt Nam, cập nhật theo mùa.</li><li><strong>Đo đạc – tư vấn tận nơi miễn phí</strong> trong 24 giờ, báo giá chi tiết theo từng ô cửa.</li><li><strong>Bảo hành 12 – 24 tháng</strong>, bảo trì trọn đời, đổi mới nếu lỗi sản xuất.</li></ul><h2>Xưởng sản xuất</h2><p>Xưởng rộng 600 m² với máy may công nghiệp, máy cắt vải tự động và đội ngũ thợ may hơn 10 năm kinh nghiệm, đảm bảo đường may thẳng, nếp rèm đều và đúng kích thước từng milimet.</p>`,
+        "Rèm Kim Dung là xưởng may và showroom rèm cửa tại TP. Hồ Chí Minh, chuyên rèm vải, rèm cuốn, rèm cầu vồng, rèm roman, rèm sáo gỗ – nhôm cho căn hộ, nhà phố, văn phòng và khách sạn. Chúng tôi đo đạc tận nơi miễn phí, báo giá theo mét vuông rõ ràng và lắp đặt trong 3 – 5 ngày.",
+      aboutContent: `<h2>Câu chuyện Rèm Kim Dung</h2><p>Thành lập năm ${FOUNDED_YEAR} từ một xưởng may nhỏ tại Quận 7, Rèm Kim Dung đã thi công hơn 1.200 công trình lớn nhỏ: căn hộ chung cư, biệt thự, văn phòng, khách sạn và trường học trên khắp TP. Hồ Chí Minh và các tỉnh lân cận.</p><h2>Vì sao khách hàng chọn Kim Dung</h2><ul><li><strong>Giá tận xưởng:</strong> tự may, tự lắp, không qua trung gian.</li><li><strong>Hơn 500 mẫu vải</strong> nhập khẩu Hàn Quốc, Đài Loan, Bỉ và Việt Nam, cập nhật theo mùa.</li><li><strong>Đo đạc – tư vấn tận nơi miễn phí</strong> trong 24 giờ, báo giá chi tiết theo từng ô cửa.</li><li><strong>Bảo hành 12 – 24 tháng</strong>, bảo trì trọn đời, đổi mới nếu lỗi sản xuất.</li></ul><h2>Xưởng sản xuất</h2><p>Xưởng rộng 600 m² với máy may công nghiệp, máy cắt vải tự động và đội ngũ thợ may hơn 10 năm kinh nghiệm, đảm bảo đường may thẳng, nếp rèm đều và đúng kích thước từng milimet.</p>`,
       vision: "Trở thành thương hiệu rèm cửa được tin chọn nhất tại miền Nam, mang vẻ đẹp và sự tiện nghi đến mọi không gian sống.",
       mission: "Mang đến giải pháp che nắng – trang trí phù hợp cho từng ô cửa với chất lượng xưởng, giá hợp lý và dịch vụ tận tâm từ tư vấn đến bảo hành.",
       warrantyText: "Bảo hành 12 – 24 tháng, bảo trì trọn đời, đổi mới trong 7 ngày nếu lỗi sản xuất",
       introVideoUrl: null,
-      metaTitle: "Rèm Niji – Rèm cửa đẹp, giá xưởng tại TP. HCM",
+      metaTitle: "Rèm Kim Dung – Rèm cửa đẹp, giá xưởng tại TP. HCM",
       metaDescription: "Rèm vải, rèm cuốn, rèm cầu vồng, rèm roman, rèm sáo gỗ – nhôm cho căn hộ, nhà phố, văn phòng. Đo đạc tận nơi miễn phí, lắp đặt trong 3 – 5 ngày, bảo hành đến 24 tháng.",
       ogImage: "/og-default.jpg",
       priceTableTitle: "Bảng giá rèm cửa tham khảo",
@@ -95,13 +95,13 @@ async function main() {
   const editorId = sid("user:editor");
   insert("User", [
     { id: adminId, email: adminEmail, name: "Quản trị viên", passwordHash: await hashPassword(adminPassword), role: "ADMIN", isActive: true, ...stamps() },
-    { id: editorId, email: "bientap@remniji.vn", name: "Biên tập viên", passwordHash: await hashPassword("Editor@12345"), role: "EDITOR", isActive: true, ...stamps() },
+    { id: editorId, email: "bientap@remmankimdung.vn", name: "Biên tập viên", passwordHash: await hashPassword("Editor@12345"), role: "EDITOR", isActive: true, ...stamps() },
   ]);
 
   // ---------- CHUYÊN MỤC & THẺ BÀI VIẾT ----------
   const categories: [string, string, string][] = [
     ["kinh-nghiem-chon-rem", "Kinh nghiệm chọn rèm", "Mẹo chọn chất liệu, màu sắc, kiểu rèm phù hợp từng không gian"],
-    ["cong-trinh-tieu-bieu", "Công trình tiêu biểu", "Hình ảnh thực tế các công trình Rèm Niji đã thi công"],
+    ["cong-trinh-tieu-bieu", "Công trình tiêu biểu", "Hình ảnh thực tế các công trình Rèm Kim Dung đã thi công"],
     ["huong-dan-bao-quan", "Hướng dẫn sử dụng & bảo quản", "Cách vệ sinh, bảo quản rèm vải, rèm cuốn, rèm sáo"],
     ["khuyen-mai", "Khuyến mãi", "Ưu đãi và chương trình giảm giá theo mùa"],
   ];
@@ -118,7 +118,7 @@ async function main() {
     { slug: "rem-vai", name: "Rèm vải", image: "/images/cat-rem-vai.jpg", priceNote: "Giá từ 350.000 đ/m²", isFeatured: true,
       summary: "Rèm vải hệ 1 lớp, 2 lớp (voan + cản sáng) và vải chống nắng 100% – lựa chọn phổ biến nhất cho phòng khách, phòng ngủ.",
       highlights: ["Hơn 300 mẫu vải Hàn Quốc, Đài Loan, Bỉ", "Cản sáng 70 – 100%, cách nhiệt, giảm ồn", "May đúng kích thước, nếp rèm đều", "Thanh treo nhôm hoặc thanh gỗ, có loại chạy motor"],
-      description: `<h2>Rèm vải – mềm mại và sang trọng cho mọi không gian</h2><p>Rèm vải là loại rèm phổ biến nhất tại Việt Nam nhờ sự đa dạng về chất liệu, màu sắc và kiểu may. Niji cung cấp 3 dòng chính:</p><ul><li><strong>Rèm vải hệ 1 lớp:</strong> một lớp vải dày cản sáng 70 – 90%, phù hợp phòng khách, phòng làm việc.</li><li><strong>Rèm vải hệ 2 lớp:</strong> lớp voan mỏng ban ngày + lớp vải dày ban đêm, tiện dụng và đẹp nhất cho phòng ngủ, phòng khách căn hộ.</li><li><strong>Rèm vải chống nắng 100%:</strong> vải blackout dệt 3 lớp, cản sáng tuyệt đối, cách nhiệt tốt – lý tưởng cho phòng ngủ hướng Tây, phòng trẻ em, phòng chiếu phim.</li></ul><h2>Kiểu may</h2><p>Ly xếp đôi, ly xếp ba, ly sóng (wave), ô-rê (eyelet) hoặc dây rút. Phụ kiện gồm thanh treo nhôm hợp kim, ray âm trần hoặc thanh gỗ trang trí, có thể lắp motor điều khiển từ xa.</p>` },
+      description: `<h2>Rèm vải – mềm mại và sang trọng cho mọi không gian</h2><p>Rèm vải là loại rèm phổ biến nhất tại Việt Nam nhờ sự đa dạng về chất liệu, màu sắc và kiểu may. Kim Dung cung cấp 3 dòng chính:</p><ul><li><strong>Rèm vải hệ 1 lớp:</strong> một lớp vải dày cản sáng 70 – 90%, phù hợp phòng khách, phòng làm việc.</li><li><strong>Rèm vải hệ 2 lớp:</strong> lớp voan mỏng ban ngày + lớp vải dày ban đêm, tiện dụng và đẹp nhất cho phòng ngủ, phòng khách căn hộ.</li><li><strong>Rèm vải chống nắng 100%:</strong> vải blackout dệt 3 lớp, cản sáng tuyệt đối, cách nhiệt tốt – lý tưởng cho phòng ngủ hướng Tây, phòng trẻ em, phòng chiếu phim.</li></ul><h2>Kiểu may</h2><p>Ly xếp đôi, ly xếp ba, ly sóng (wave), ô-rê (eyelet) hoặc dây rút. Phụ kiện gồm thanh treo nhôm hợp kim, ray âm trần hoặc thanh gỗ trang trí, có thể lắp motor điều khiển từ xa.</p>` },
     { slug: "rem-cuon", name: "Rèm cuốn", image: "/images/cat-rem-cuon.jpg", priceNote: "Giá từ 250.000 đ/m²", isFeatured: true,
       summary: "Rèm cuốn trơn, hoa văn và rèm cuốn lưới – gọn gàng, hiện đại, dễ vệ sinh cho văn phòng, phòng ngủ, bếp.",
       highlights: ["Thiết kế tối giản, tiết kiệm diện tích", "Vải Polyester phủ PVC, chống ẩm mốc", "Cản sáng 70 – 100% hoặc lưới xuyên sáng", "Kéo dây hoặc motor, lắp trong 30 phút"],
@@ -142,7 +142,7 @@ async function main() {
     { slug: "rem-phong-tam", name: "Rèm phòng tắm", image: "/images/cat-rem-phong-tam.jpg", priceNote: "Giá từ 180.000 đ/bộ", isFeatured: false,
       summary: "Rèm phòng tắm Polyester chống thấm, PEVA trong mờ – nhiều họa tiết, kèm thanh treo và móc.",
       highlights: ["Chống thấm, chống nấm mốc", "Giặt máy được", "Kèm thanh treo inox và 12 móc", "Nhiều kích thước 1,8 × 1,8 m – 2,0 × 2,2 m"],
-      description: `<h2>Rèm phòng tắm</h2><p>Rèm phòng tắm ngăn nước bắn ra sàn, giữ phòng tắm khô ráo và trang trí không gian. Niji cung cấp rèm Polyester chống thấm (giặt máy được) và rèm PEVA trong mờ, kèm thanh treo inox và bộ móc.</p>` },
+      description: `<h2>Rèm phòng tắm</h2><p>Rèm phòng tắm ngăn nước bắn ra sàn, giữ phòng tắm khô ráo và trang trí không gian. Kim Dung cung cấp rèm Polyester chống thấm (giặt máy được) và rèm PEVA trong mờ, kèm thanh treo inox và bộ móc.</p>` },
     { slug: "rem-la-doc", name: "Rèm lá dọc văn phòng", image: "/images/cat-rem-la-doc.jpg", priceNote: "Giá từ 230.000 đ/m²", isFeatured: false,
       summary: "Rèm sáo lá dọc (lá vải hoặc PVC bản 89 mm) – giải pháp che nắng kinh tế cho văn phòng, phòng họp, vách kính lớn.",
       highlights: ["Lá vải Polyester hoặc PVC chống cháy", "Xoay lá 180°, kéo gom sang một bên", "Chịu được cửa kính cao 3 – 4 m", "Giá tốt cho diện tích lớn"],
@@ -182,7 +182,7 @@ async function main() {
     featured?: boolean; status?: "ACTIVE" | "HIDDEN"; description?: string;
   };
   const desc = (name: string, extra: string) =>
-    `<h2>Giới thiệu</h2><p>${name} được Niji may đo theo đúng kích thước từng ô cửa của bạn. ${extra}</p><h2>Phụ kiện đi kèm</h2><ul><li>Thanh treo / ray nhôm hợp kim sơn tĩnh điện</li><li>Bộ phụ kiện lắp đặt, móc, dây kéo</li><li>Tùy chọn motor điều khiển từ xa (báo giá riêng)</li></ul><h2>Quy trình</h2><p>Đo đạc tận nơi miễn phí → chọn mẫu vải tại nhà → báo giá chi tiết → may trong 3 – 5 ngày → lắp đặt và bàn giao.</p>`;
+    `<h2>Giới thiệu</h2><p>${name} được Kim Dung may đo theo đúng kích thước từng ô cửa của bạn. ${extra}</p><h2>Phụ kiện đi kèm</h2><ul><li>Thanh treo / ray nhôm hợp kim sơn tĩnh điện</li><li>Bộ phụ kiện lắp đặt, móc, dây kéo</li><li>Tùy chọn motor điều khiển từ xa (báo giá riêng)</li></ul><h2>Quy trình</h2><p>Đo đạc tận nơi miễn phí → chọn mẫu vải tại nhà → báo giá chi tiết → may trong 3 – 5 ngày → lắp đặt và bàn giao.</p>`;
   const products: ProductSeed[] = [
     { slug: "rem-vai-gam-han-quoc-mot-lop-rv-101", name: "Rèm vải gấm Hàn Quốc một lớp RV-101", category: "rem-vai", line: "rem-vai-he-1-lop", code: "RV-101", featured: true,
       summary: "Vải gấm Polyester dệt dày, bề mặt bóng nhẹ, cản sáng 85%, phù hợp phòng khách và phòng làm việc.",
@@ -339,13 +339,13 @@ async function main() {
       content: `<p>Rèm cuốn rẻ hơn, phẳng gọn, cản sáng tốt nhưng chỉ có hai trạng thái đóng/mở. Rèm cầu vồng đắt hơn 40 – 60% nhưng điều chỉnh được mức sáng và đẹp hơn cho phòng khách, phòng ngủ.</p><ul><li>Bếp, phòng tắm, cửa sổ nhỏ: rèm cuốn.</li><li>Phòng khách, phòng ngủ: rèm cầu vồng.</li></ul>` },
     { slug: "cong-trinh-can-ho-3-phong-ngu-vinhomes-grand-park", title: "Công trình: căn hộ 3 phòng ngủ Vinhomes Grand Park", category: "cong-trinh-tieu-bieu", tags: ["rem-vai", "rem-cau-vong", "phong-ngu"], coverImage: "/images/post-4.jpg", status: "PUBLISHED", publishedAt: daysAgo(14), isFeatured: true, authorId: editorId, categoryId: cat("cong-trinh-tieu-bieu"), metaTitle: null, metaDescription: null,
       excerpt: "Trọn bộ rèm vải 2 lớp phòng khách, rèm cầu vồng 3 phòng ngủ và rèm cuốn bếp – hoàn thiện trong 4 ngày.",
-      content: `<p>Khách hàng mong muốn không gian sáng, tông màu be – xám ấm. Niji tư vấn rèm vải 2 lớp RV-201 màu kem cho phòng khách, rèm cầu vồng CV-01 màu xám cho 3 phòng ngủ và rèm cuốn trơn RC-01 cho bếp.</p><p>Tổng diện tích 38 m², thời gian từ đo đạc đến lắp đặt: 4 ngày.</p>` },
+      content: `<p>Khách hàng mong muốn không gian sáng, tông màu be – xám ấm. Kim Dung tư vấn rèm vải 2 lớp RV-201 màu kem cho phòng khách, rèm cầu vồng CV-01 màu xám cho 3 phòng ngủ và rèm cuốn trơn RC-01 cho bếp.</p><p>Tổng diện tích 38 m², thời gian từ đo đạc đến lắp đặt: 4 ngày.</p>` },
     { slug: "huong-dan-ve-sinh-rem-vai-tai-nha", title: "Hướng dẫn vệ sinh rèm vải tại nhà đúng cách", category: "huong-dan-bao-quan", tags: ["rem-vai", "bao-quan"], coverImage: "/images/service-ve-sinh.jpg", status: "PUBLISHED", publishedAt: daysAgo(20), isFeatured: false, authorId: editorId, categoryId: cat("huong-dan-bao-quan"), metaTitle: null, metaDescription: null,
       excerpt: "Hút bụi định kỳ, giặt máy chế độ nhẹ và phơi đúng cách để rèm bền màu, không nhăn.",
       content: `<ol><li>Hút bụi rèm 2 tuần/lần bằng đầu hút mềm.</li><li>Giặt máy chế độ nhẹ, nước lạnh, không vắt mạnh với vải Polyester; nhung và linen nên giặt khô.</li><li>Phơi nơi râm mát, treo lại khi còn hơi ẩm để rèm tự thẳng.</li><li>Không dùng thuốc tẩy; vết bẩn cục bộ dùng xà phòng loãng.</li></ol>` },
     { slug: "uu-dai-thang-nay-giam-15-rem-vai-2-lop", title: "Ưu đãi tháng này: giảm 15% rèm vải 2 lớp, tặng công lắp đặt", category: "khuyen-mai", tags: ["rem-vai"], coverImage: "/images/hero-2.jpg", status: "PUBLISHED", publishedAt: daysAgo(1), isFeatured: false, authorId: adminId, categoryId: cat("khuyen-mai"), metaTitle: null, metaDescription: null,
       excerpt: "Áp dụng cho đơn hàng từ 10 m² trong tháng, đo đạc miễn phí toàn TP. HCM.",
-      content: `<p>Từ nay đến cuối tháng, Rèm Niji giảm 15% toàn bộ rèm vải hệ 2 lớp và miễn phí công lắp đặt cho đơn hàng từ 10 m². Liên hệ hotline hoặc gửi yêu cầu báo giá để được áp dụng.</p>` },
+      content: `<p>Từ nay đến cuối tháng, Rèm Kim Dung giảm 15% toàn bộ rèm vải hệ 2 lớp và miễn phí công lắp đặt cho đơn hàng từ 10 m². Liên hệ hotline hoặc gửi yêu cầu báo giá để được áp dụng.</p>` },
     { slug: "rem-van-phong-nen-chon-loai-nao", title: "Rèm văn phòng nên chọn loại nào? (bản nháp)", category: "kinh-nghiem-chon-rem", tags: ["van-phong", "rem-cuon"], coverImage: "/images/hero-3.jpg", status: "DRAFT", publishedAt: null, isFeatured: false, authorId: editorId, categoryId: cat("kinh-nghiem-chon-rem"), metaTitle: null, metaDescription: null,
       excerpt: "So sánh rèm cuốn lưới, rèm lá dọc và rèm sáo nhôm cho văn phòng.", content: `<p>Bản nháp – đang biên tập.</p>` },
   ];
@@ -364,7 +364,7 @@ async function main() {
     { name: "Chị Thu Hà", position: "Chủ căn hộ tại Quận 7, TP. HCM", content: "Nhân viên mang vải đến tận nhà cho mình chọn, đo đạc rất kỹ. Bộ rèm 2 lớp phòng khách lên màu đẹp hơn cả mong đợi, nếp rèm đều tăm tắp. Lắp xong dọn dẹp sạch sẽ.", rating: 5, order: 1 },
     { name: "Anh Minh Quân", position: "Giám đốc văn phòng tại Quận 1", content: "Văn phòng kính hướng Tây rất nóng, lắp rèm cuốn lưới sunscreen xong giảm nóng rõ rệt mà vẫn nhìn ra ngoài được. Giá hợp lý, thi công 1 buổi là xong 12 cửa.", rating: 5, order: 2 },
     { name: "Chị Lan Anh", position: "Chủ nhà phố tại Thủ Đức", content: "Chọn rèm cầu vồng cho 3 phòng ngủ, rất dễ dùng và không bám bụi như rèm vải. Sau 1 năm dây kéo hơi rít, gọi bảo hành là có thợ đến chỉnh ngay, không tính phí.", rating: 5, order: 3 },
-    { name: "Anh Hoàng Nam", position: "Chủ quán cà phê tại Bình Thạnh", content: "Rèm sáo gỗ basswood làm quán ấm cúng hẳn, khách khen nhiều. Niji tư vấn màu gỗ hợp với bàn ghế, giao đúng hẹn.", rating: 5, order: 4 },
+    { name: "Anh Hoàng Nam", position: "Chủ quán cà phê tại Bình Thạnh", content: "Rèm sáo gỗ basswood làm quán ấm cúng hẳn, khách khen nhiều. Kim Dung tư vấn màu gỗ hợp với bàn ghế, giao đúng hẹn.", rating: 5, order: 4 },
     { name: "Chị Phương Thảo", position: "Chủ đầu tư căn hộ dịch vụ, Quận 2", content: "Đặt 40 bộ rèm cho tòa căn hộ dịch vụ, giá công trình tốt, mẫu đồng bộ, bảo hành 2 năm. Đội thi công làm gọn trong 3 ngày.", rating: 4, order: 5 },
   ].map((t) => ({ id: sid(`testimonial:${t.order}`), ...t, avatar: null, isActive: true, ...stamps() })));
 

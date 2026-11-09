@@ -38,6 +38,7 @@ src/db/schema.ts              Schema Drizzle (bảng, cột, quan hệ) – KHÔ
 src/db/index.ts               `db` (Drizzle + D1 binding) → import { db, posts, ... } from "@/db"
 src/db/types.ts, enums.ts     Kiểu hàng (Post, Product, ProductCategory...) và enum (ProductStatus, PriceUnit, LeadStatus...)
 db/seed.ts                    Sinh db/seed.sql rồi wrangler nạp vào D1 (npm run db:seed)
+db/reset.sql                  Xoá dữ liệu seed ở D1 local để seed lại (npm run db:reset)
 .env / .dev.vars              Biến local cho Next / cho runtime Workers (xem README)
 src/app/layout.tsx            Root layout (font Be Vietnam Pro, Toaster, TooltipProvider)
 src/app/(public)/**           Trang công khai (render động mỗi request: `export const dynamic = "force-dynamic"`)
@@ -69,7 +70,7 @@ src/components/admin/*        page-header, submit-button, confirm-delete-button,
                               url-filters (SearchInput, UrlParamSelect), status-badge, empty-state,
                               image-upload-field, sidebar, header, nav.ts, login-form + thư mục theo module
 src/components/public/*       component trang công khai
-public/images/*.jpg           Ảnh minh họa Unsplash dùng trong seed (xem CREDITS.md), public/logo.svg (logo tròn Niji), og-default.jpg
+public/images/*.jpg           Ảnh minh họa Unsplash dùng trong seed (xem CREDITS.md), public/logo.svg (logo tạm Kim Dung – thay bằng logo thật), og-default.jpg
 public/_headers               Cache dài hạn cho /_next/static
 ```
 
@@ -184,7 +185,7 @@ export async function createPost(input: unknown): Promise<ActionResult<{ id: str
 ## 6. Chạy & kiểm tra
 
 - D1/R2 local nằm trong `.wrangler/state` (gitignored). Lần đầu: `npm run db:migrate && npm run db:seed`.
-- Tài khoản: `admin@example.com / Admin@12345` (ADMIN, đổi qua `SEED_ADMIN_*` trong `.env`), `bientap@remniji.vn / Editor@12345` (EDITOR).
+- Tài khoản: `admin@example.com / Admin@12345` (ADMIN, đổi qua `SEED_ADMIN_*` trong `.env`), `bientap@remmankimdung.vn / Editor@12345` (EDITOR).
 - `npm run dev` (Turbopack, binding giả lập) – cổng 3000 có thể bị chiếm trên máy dev, dùng `npm run dev -- -p 3100`.
 - `npm run preview` chạy đúng runtime Workers tại http://localhost:8787 (cần `.dev.vars` có `AUTH_SECRET` và `AUTH_URL=http://localhost:8787`).
 - Kiểm tra bắt buộc trước khi báo hoàn thành: `npx tsc --noEmit`, `npx eslint <thư mục>`; kích thước Worker: `npx wrangler deploy --dry-run --outdir=.wrangler/dry-run` (gzip phải < 3 MiB để chạy gói Free).

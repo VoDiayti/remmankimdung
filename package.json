@@ -17,6 +17,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
     "db:seed": "tsx db/seed.ts && wrangler d1 execute DB --local --file=db/seed.sql",
     "db:seed:remote": "tsx db/seed.ts && wrangler d1 execute DB --remote --file=db/seed.sql --yes",
+    "db:reset": "wrangler d1 execute DB --local --file=db/reset.sql && npm run db:seed",
     "db:shell": "wrangler d1 execute DB --local --command"
   },
   "dependencies": {

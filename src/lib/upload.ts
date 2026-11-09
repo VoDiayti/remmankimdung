@@ -21,8 +21,8 @@ const EXTENSIONS: Record<string, string> = {
 };
 const MAX_MB = Number(process.env.MAX_UPLOAD_SIZE_MB ?? 8);
 export const MAX_UPLOAD_BYTES = MAX_MB * 1024 * 1024;
-/** Thư mục gốc chứa ảnh upload trong bucket R2: Niji/<năm>/<tháng>/<tên-file> */
-const KEY_PREFIX = "Niji";
+/** Thư mục gốc chứa ảnh upload trong bucket R2: KimDung/<năm>/<tháng>/<tên-file> */
+const KEY_PREFIX = "KimDung";
 
 function randomSuffix(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(4));

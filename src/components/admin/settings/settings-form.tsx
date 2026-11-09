@@ -132,7 +132,7 @@ export function SettingsForm({ initialData }: { initialData: Setting }) {
                 <div className="space-y-4 lg:col-span-2">
                   <TextField control={form.control} name="companyName" label="Tên cửa hàng / công ty" required placeholder="Công ty TNHH Rèm Màn ..." />
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <TextField control={form.control} name="shortName" label="Tên thương hiệu ngắn" placeholder="Vd: Rèm Niji" description="Hiện trên menu, tiêu đề trang và nơi hẹp." />
+                    <TextField control={form.control} name="shortName" label="Tên thương hiệu ngắn" placeholder="Vd: Rèm Kim Dung" description="Hiện trên menu, tiêu đề trang và nơi hẹp." />
                     <TextField control={form.control} name="foundedYear" label="Năm thành lập" inputMode="numeric" placeholder="2016" />
                   </div>
                   <TextField control={form.control} name="slogan" label="Slogan" placeholder="Rèm đẹp cho mọi không gian – Giá tận xưởng" />
@@ -165,7 +165,7 @@ export function SettingsForm({ initialData }: { initialData: Setting }) {
                 <div className="grid gap-4 sm:grid-cols-3">
                   <TextField control={form.control} name="hotline" label="Hotline" required type="tel" placeholder="0909 000 000" />
                   <TextField control={form.control} name="zalo" label="Số Zalo" type="tel" placeholder="0909000000" description="Để trống sẽ dùng hotline." />
-                  <TextField control={form.control} name="email" label="Email liên hệ" type="email" placeholder="lienhe@remniji.vn" />
+                  <TextField control={form.control} name="email" label="Email liên hệ" type="email" placeholder="lienhe@remmankimdung.vn" />
                 </div>
                 <TextField control={form.control} name="address" label="Địa chỉ showroom" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" />
                 <TextField control={form.control} name="workingHours" label="Giờ làm việc" placeholder="Thứ 2 – Chủ nhật: 8:00 – 20:00" />
@@ -216,10 +216,10 @@ export function SettingsForm({ initialData }: { initialData: Setting }) {
                 <CardDescription>Để trống mục nào thì icon mạng xã hội đó sẽ không hiển thị.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-2">
-                <TextField control={form.control} name="facebook" label="Facebook" type="url" placeholder="https://www.facebook.com/remniji" />
-                <TextField control={form.control} name="youtube" label="YouTube" type="url" placeholder="https://www.youtube.com/@remniji" />
-                <TextField control={form.control} name="tiktok" label="TikTok" type="url" placeholder="https://www.tiktok.com/@remniji" />
-                <TextField control={form.control} name="messenger" label="Messenger" type="url" placeholder="https://m.me/remniji" />
+                <TextField control={form.control} name="facebook" label="Facebook" type="url" placeholder="https://www.facebook.com/remmankimdung" />
+                <TextField control={form.control} name="youtube" label="YouTube" type="url" placeholder="https://www.youtube.com/@remmankimdung" />
+                <TextField control={form.control} name="tiktok" label="TikTok" type="url" placeholder="https://www.tiktok.com/@remmankimdung" />
+                <TextField control={form.control} name="messenger" label="Messenger" type="url" placeholder="https://m.me/remmankimdung" />
               </CardContent>
             </Card>
           </TabsContent>
@@ -357,7 +357,7 @@ export function SettingsForm({ initialData }: { initialData: Setting }) {
               </CardHeader>
               <CardContent className="grid gap-6 lg:grid-cols-3">
                 <div className="space-y-4 lg:col-span-2">
-                  <TextField control={form.control} name="metaTitle" label="Tiêu đề trang (meta title)" placeholder="Vd: Rèm Niji – Rèm cửa cao cấp, đo đạc & lắp đặt tận nơi TP.HCM" maxLength={160} description="Khuyến nghị 50–60 ký tự." />
+                  <TextField control={form.control} name="metaTitle" label="Tiêu đề trang (meta title)" placeholder="Vd: Rèm Kim Dung – Rèm cửa cao cấp, đo đạc & lắp đặt tận nơi TP.HCM" maxLength={160} description="Khuyến nghị 50–60 ký tự." />
                   <TextField control={form.control} name="metaDescription" label="Mô tả trang (meta description)" multiline rows={3} maxLength={320} description="Khuyến nghị 150–160 ký tự." />
                 </div>
                 <FormField
