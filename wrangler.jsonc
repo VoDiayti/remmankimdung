@@ -1,7 +1,9 @@
 {
 	// Cấu hình Cloudflare Worker cho website rèm màn (OpenNext). Tài liệu: https://opennext.js.org/cloudflare
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "rem-man-kim-dung",
+	// Tên Worker trên Cloudflare, website: https://remmankimdung.diayti.workers.dev
+	// D1 và R2 bên dưới vẫn giữ tên cũ "rem-man-kim-dung" (không đổi tên được) – đừng sửa 2 tên đó theo.
+	"name": "remmankimdung",
 	"main": ".open-next/worker.js",
 	"compatibility_date": "2026-06-01",
 	"compatibility_flags": [
@@ -15,7 +17,7 @@
 	"services": [
 		{
 			"binding": "WORKER_SELF_REFERENCE",
-			"service": "rem-man-kim-dung"
+			"service": "remmankimdung" // phải trùng "name" ở trên
 		}
 	],
 	// Database D1 (SQLite) đã tạo trên Cloudflare: rem-man-kim-dung.

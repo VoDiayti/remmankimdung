@@ -39,7 +39,7 @@ Tài khoản mẫu (đổi ngay sau khi đăng nhập tại **Admin → Tài kho
 | Vai trò | Email | Mật khẩu |
 |---|---|---|
 | Quản trị viên | `admin@example.com` (đổi qua `SEED_ADMIN_EMAIL`) | `Admin@12345` (đổi qua `SEED_ADMIN_PASSWORD`) |
-| Biên tập viên | `bientap@remniji.vn` | `Editor@12345` |
+| Biên tập viên | `bientap@remmankimdung.vn` | `Editor@12345` |
 
 Muốn chạy đúng runtime Workers (workerd) trên máy: `npm run preview` (build bằng OpenNext rồi chạy wrangler dev tại http://localhost:8787).
 
@@ -57,6 +57,7 @@ Muốn chạy đúng runtime Workers (workerd) trên máy: `npm run preview` (bu
 | `npm run db:migration -- ten-thay-doi` | Sinh file SQL migration mới từ thay đổi trong `src/db/schema.ts` (drizzle-kit) |
 | `npm run db:migrate` / `db:migrate:remote` | Áp dụng migration vào D1 local / production |
 | `npm run db:seed` / `db:seed:remote` | Sinh `db/seed.sql` và nạp vào D1 local / production (INSERT OR IGNORE – không ghi đè dữ liệu đã sửa) |
+| `npm run db:reset` | Xoá dữ liệu mẫu trong D1 **local** rồi seed lại từ đầu (dùng khi đổi nội dung/ID trong `db/seed.ts`). Không có bản remote vì sẽ xoá lead thật và tài khoản trên production |
 | `npm run db:shell -- "SELECT ..."` | Chạy SQL trên D1 local |
 
 ## Biến môi trường và bí mật
@@ -64,6 +65,7 @@ Muốn chạy đúng runtime Workers (workerd) trên máy: `npm run preview` (bu
 - **`.env`** (local, Next.js): `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`, `R2_PUBLIC_URL`, `PASSWORD_HASH_ITERATIONS`, `SEED_ADMIN_*`... Các giá trị `NEXT_PUBLIC_*` được nhúng lúc build.
 - **`.dev.vars`** (local, runtime Workers khi `preview`): `NEXTJS_ENV=development`, `AUTH_SECRET`, `AUTH_TRUST_HOST=true`, `AUTH_URL=http://localhost:8787`, `R2_PUBLIC_URL`.
 - **Production**: bí mật đặt bằng `npx wrangler secret put AUTH_SECRET`; biến thường đặt trong `vars` của `wrangler.jsonc` (vd `R2_PUBLIC_URL`) hoặc Dashboard.
+- **Lưu ý `.env` khi deploy**: build trên máy (`npm run deploy`) thì OpenNext nhúng mọi biến trong `.env` vào Worker, nên bản đó vẫn đăng nhập được dù Worker chưa có secret `AUTH_SECRET` (và còn mang theo `NEXT_PUBLIC_SITE_URL=http://localhost:3000`, mật khẩu seed). GitHub Actions không có `.env`, nên Worker **bắt buộc** có secret `AUTH_SECRET` (workflow dừng nếu thiếu). Nên deploy production qua GitHub thay vì từ máy.
 - Xem danh sách đầy đủ trong [.env.example](.env.example).
 
 ## Chạy local với D1 / R2 thật
@@ -91,11 +93,11 @@ npx wrangler secret put AUTH_SECRET          # chuỗi ngẫu nhiên ≥ 32 ký 
 npm run db:migrate:remote
 npm run db:seed:remote                       # đổi SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD trong .env trước khi chạy
 
-# 5. Deploy lần đầu (wrangler in ra URL dạng https://rem-man-kim-dung.<tên-tài-khoản>.workers.dev)
+# 5. Deploy lần đầu (wrangler in ra URL dạng https://remmankimdung.<tên-tài-khoản>.workers.dev)
 npm run deploy
 
 # 6. Ghi URL thật vào .env.production rồi deploy lại để sitemap/Open Graph/JSON-LD dùng đúng địa chỉ
-echo 'NEXT_PUBLIC_SITE_URL="https://rem-man-kim-dung.<tên-tài-khoản>.workers.dev"' > .env.production
+echo 'NEXT_PUBLIC_SITE_URL="https://remmankimdung.<tên-tài-khoản>.workers.dev"' > .env.production
 npm run deploy
 ```
 

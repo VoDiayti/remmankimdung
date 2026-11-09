@@ -1,7 +1,7 @@
 # Tự deploy website lên Cloudflare Workers mỗi khi nhánh main có commit mới (merge PR hoặc push thẳng).
 # Cấu hình trong GitHub → Settings → Secrets and variables → Actions:
 #   Secrets:   CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
-#   Variables: NEXT_PUBLIC_SITE_URL (vd https://rem-man-kim-dung.<tai-khoan>.workers.dev)
+#   Variables: NEXT_PUBLIC_SITE_URL (vd https://remmankimdung.diayti.workers.dev)
 # AUTH_SECRET không đặt ở đây: nó là secret của Worker (`wrangler secret put AUTH_SECRET`), deploy không ghi đè.
 name: Deploy
 
@@ -39,6 +39,21 @@ jobs:
 
       - name: Cài package
         run: npm ci
+
+      # GitHub không có file .env nên Worker BẮT BUỘC phải có secret AUTH_SECRET, thiếu là trang admin không đăng nhập được.
+      # (Bản build trên máy vẫn chạy vì OpenNext nhúng .env vào Worker – đừng dựa vào đó.)
+      # Không in danh sách secret ra log: nếu lỡ dán giá trị vào ô Name thì log sẽ lộ luôn giá trị đó.
+      - name: Kiểm tra AUTH_SECRET của Worker
+        run: |
+          if ! out=$(npx wrangler secret list 2>&1); then
+            echo "$out"
+            echo "::error::Không đọc được secret của Worker. Kiểm tra CLOUDFLARE_API_TOKEN và tên Worker trong wrangler.jsonc."
+            exit 1
+          fi
+          if ! grep -q '"name": *"AUTH_SECRET"' <<< "$out"; then
+            echo "::error::Worker (tên trong wrangler.jsonc) chưa có secret AUTH_SECRET nên không đăng nhập admin được. Đặt 1 lần ở Dashboard > Worker > Settings > Variables and Secrets > Add: Type = Secret, Name = AUTH_SECRET, Value = chuỗi tạo bằng openssl rand -base64 32. Hoặc chạy: npx wrangler secret put AUTH_SECRET"
+            exit 1
+          fi
 
       - name: Kiểm tra kiểu và lint
         run: |
