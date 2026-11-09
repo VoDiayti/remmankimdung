@@ -14,7 +14,7 @@ export default async function AdminLoginPage({ searchParams }: { searchParams: P
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-dark via-primary to-brand p-4">
       <Card className="w-full max-w-md shadow-2xl">
         <CardHeader className="items-center text-center">
-          <Image src="/logo.svg" alt="Logo" width={56} height={56} className="mx-auto mb-2 rounded-xl" priority />
+          <Image src="/logo.svg" alt="Logo" width={1030} height={780} className="mx-auto mb-2 h-20 w-auto" priority />
           <CardTitle className="text-xl">Đăng nhập quản trị</CardTitle>
           <CardDescription>Khu vực dành cho quản trị viên và biên tập viên</CardDescription>
         </CardHeader>

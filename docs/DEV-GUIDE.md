@@ -70,7 +70,7 @@ src/components/admin/*        page-header, submit-button, confirm-delete-button,
                               url-filters (SearchInput, UrlParamSelect), status-badge, empty-state,
                               image-upload-field, sidebar, header, nav.ts, login-form + thư mục theo module
 src/components/public/*       component trang công khai
-public/images/*.jpg           Ảnh minh họa Unsplash dùng trong seed (xem CREDITS.md), public/logo.svg (logo tạm Kim Dung – thay bằng logo thật), og-default.jpg
+public/images/*.jpg           Ảnh minh họa Unsplash dùng trong seed (xem CREDITS.md), public/logo.svg (logo K.D Home Decor, mực đen nền trong), logo-white.svg (bản chữ trắng cho nền tối), logo-mark.svg (biểu tượng vuông – sidebar admin, trùng src/app/icon.svg), og-default.jpg
 public/_headers               Cache dài hạn cho /_next/static
 ```
 

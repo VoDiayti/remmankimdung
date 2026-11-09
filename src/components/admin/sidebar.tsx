@@ -47,7 +47,7 @@ export function AdminNav({ role, onNavigate }: { role: Role; onNavigate?: () => 
 export function SidebarBrand({ companyName }: { companyName: string }) {
   return (
     <Link href="/admin" className="flex items-center gap-2.5 border-b border-sidebar-border px-4 py-4">
-      <Image src="/logo.svg" alt="" width={36} height={36} className="rounded-lg" />
+      <Image src="/logo-mark.svg" alt="" width={36} height={36} className="rounded-lg" />
       <div className="min-w-0">
         <p className="truncate text-sm font-bold text-sidebar-foreground">{companyName}</p>
         <p className="text-[11px] text-sidebar-foreground/60">Trang quản trị</p>
