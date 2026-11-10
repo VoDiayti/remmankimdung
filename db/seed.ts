@@ -55,7 +55,7 @@ async function main() {
       companyName: "Công ty TNHH Rèm Màn Kim Dung",
       shortName: "Rèm Kim Dung",
       slogan: "Đẹp từng ô cửa – Bền từng đường may",
-      logo: "/logo.svg",
+      logo: "/logo-horizontal.svg",
       taxCode: "0316 123 456",
       foundedYear: FOUNDED_YEAR,
       hotline: "0909 123 456",

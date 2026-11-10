@@ -25,7 +25,7 @@ export function BrandLogo({ logo, companyName, shortName, showName = true, tone 
           width={160}
           height={160}
           priority
-          className="h-12 w-auto max-w-32 shrink-0 object-contain object-left sm:h-14 sm:max-w-36 2xl:max-w-40"
+          className="h-10 w-auto max-w-44 shrink-0 object-contain object-left sm:h-12 sm:max-w-52 lg:h-10 xl:h-12"
         />
       ) : (
         <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-lg font-extrabold text-primary-foreground">

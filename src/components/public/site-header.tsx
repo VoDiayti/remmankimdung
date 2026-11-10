@@ -53,7 +53,8 @@ export async function SiteHeader() {
       {/* Thanh chính */}
       <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
         <div className="container-page flex h-16 items-center justify-between gap-3 md:h-[4.5rem]">
-          <BrandLogo logo={s.logo} companyName={s.companyName} shortName={s.shortName} />
+          {/* Logo ngang đã có tên thương hiệu → không hiện thêm tên công ty bên cạnh (tránh tràn header ở 768–1023px) */}
+          <BrandLogo logo={s.logo} companyName={s.companyName} shortName={s.shortName} showName={false} />
 
           {/* Menu ngang hiện từ 1024px (1024–1279px thu gọn khoảng cách); dưới đó dùng menu di động để không bị tràn */}
           <nav aria-label="Menu chính" className="hidden lg:block">

@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS: Setting = {
   companyName: "Cửa hàng rèm cửa",
   shortName: "Rèm cửa",
   slogan: "Rèm đẹp cho mọi không gian",
-  logo: "/logo.svg",
+  logo: "/logo-horizontal.svg",
   taxCode: null,
   foundedYear: null,
   hotline: "0900 000 000",
