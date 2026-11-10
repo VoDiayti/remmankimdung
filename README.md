@@ -71,8 +71,8 @@ Muốn chạy đúng runtime Workers (workerd) trên máy: `npm run preview` (bu
 ## Chạy local với D1 / R2 thật
 
 Trong `wrangler.jsonc`, binding `DB` và `R2_BUCKET` có cờ `"remote": true|false`:
-- `true`: `npm run dev` / `npm run preview` đọc–ghi thẳng dữ liệu thật trên Cloudflare (cần `npx wrangler login`, đã tạo D1/R2 và điền `database_id`; điền `R2_PUBLIC_URL` thật trong `.dev.vars`).
-- `false` (mặc định của repo này): dùng bản giả lập trong `.wrangler/state` (chạy `npm run db:migrate && npm run db:seed` lần đầu; để trống `R2_PUBLIC_URL` trong `.dev.vars`).
+- `true` (repo đang dùng): `npm run dev` / `npm run preview` đọc–ghi thẳng dữ liệu thật trên Cloudflare – local và website dùng chung database + ảnh (cần `npx wrangler login`, đã tạo D1/R2 và điền `database_id`; nếu bucket có URL công khai thì điền `R2_PUBLIC_URL` thật trong `.dev.vars`). Bật/tắt D1 và R2 cùng nhau để ảnh trong DB luôn có thật trong bucket.
+- `false`: dùng bản giả lập trong `.wrangler/state` (chạy `npm run db:migrate && npm run db:seed` lần đầu; để trống `R2_PUBLIC_URL` trong `.dev.vars`).
 
 ## Triển khai lên Cloudflare (lần đầu)
 

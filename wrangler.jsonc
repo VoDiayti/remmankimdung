@@ -28,9 +28,10 @@
 			"database_name": "rem-man-kim-dung",
 			"database_id": "92b35937-70b1-4ab0-acba-def3f227dc19",
 			"migrations_dir": "migrations",
-			// true: `npm run dev` / `npm run preview` dùng D1 THẬT trên Cloudflare (cần `npx wrangler login`,
-			// đã chạy `npm run db:migrate:remote` + `npm run db:seed:remote`). false: dùng bản giả lập trong .wrangler/state.
-			"remote": false
+			// true (đang dùng): `npm run dev` / `npm run preview` đọc–ghi D1 THẬT trên Cloudflare – dùng chung dữ liệu với website
+			// (cần `npx wrangler login`). Mọi thao tác thêm/sửa/xoá ở local ghi thẳng vào dữ liệu thật!
+			// false: dùng bản giả lập trong .wrangler/state (chạy `npm run db:migrate && npm run db:seed` lần đầu).
+			"remote": true
 		}
 	],
 	// Bucket R2 chứa ảnh upload đã tạo trên Cloudflare: rem-man-kim-dung.
@@ -39,8 +40,9 @@
 		{
 			"binding": "R2_BUCKET",
 			"bucket_name": "rem-man-kim-dung",
-			// true: upload ảnh vào bucket R2 THẬT khi chạy local (đồng bộ với R2_PUBLIC_URL trong .dev.vars)
-			"remote": false
+			// true (đang dùng): ảnh upload/đọc ở local nằm trong bucket R2 THẬT – phải bật cùng D1 ở trên,
+			// nếu không DB thật sẽ trỏ tới ảnh chỉ có trên máy (vỡ ảnh trên website). Đồng bộ với R2_PUBLIC_URL trong .dev.vars.
+			"remote": true
 		}
 	],
 	// Tối ưu ảnh cho next/image bằng Cloudflare Images
