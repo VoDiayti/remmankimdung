@@ -68,6 +68,59 @@
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* Hiệu ứng trang trí (section Giới thiệu ở trang chủ) */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glow: glow 7s ease-in-out infinite;
+  --animate-soft-ping: soft-ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-ring: ring 3.2s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes glow {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.95; transform: scale(1.15); }
+  }
+  @keyframes soft-ping {
+    0% { opacity: 0.7; transform: scale(1); }
+    80%, 100% { opacity: 0; transform: scale(1.8); }
+  }
+  /* Banner trang chủ: chữ hiện lên + thanh tiến độ tự chuyển slide; vệt sáng lướt trên nút CTA */
+  --animate-hero-in: hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-progress: slide-progress linear forwards;
+  --animate-shine: shine 4s ease-in-out infinite;
+  --animate-grow-x: grow-x 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes hero-in {
+    from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes slide-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes shine {
+    0% { transform: translateX(-150%) skewX(-20deg); }
+    45%, 100% { transform: translateX(350%) skewX(-20deg); }
+  }
+
+  /* Rung chuông điện thoại rồi nghỉ */
+  @keyframes ring {
+    0%, 68%, 100% { transform: rotate(0); }
+    72% { transform: rotate(-14deg); }
+    76% { transform: rotate(12deg); }
+    80% { transform: rotate(-10deg); }
+    84% { transform: rotate(7deg); }
+    88% { transform: rotate(-3deg); }
+    92% { transform: rotate(0); }
+  }
 }
 
 :root {
@@ -277,4 +330,106 @@
 }
 .tiptap div[data-youtube-video].ProseMirror-selectednode iframe {
   outline: 3px solid var(--ring);
+}
+
+/* ---------- Hiệu ứng xuất hiện khi cuộn tới (src/components/public/reveal.tsx) ----------
+   Chỉ ẩn khi JS đã "armed" section → không JS / giảm chuyển động vẫn thấy nội dung. */
+[data-reveal] {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal-armed] [data-reveal]:not([data-shown]) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+[data-reveal-armed] [data-reveal="fade"]:not([data-shown]) {
+  transform: none;
+}
+[data-reveal-armed] [data-reveal="zoom"]:not([data-shown]) {
+  transform: scale(0.8);
+}
+[data-reveal-armed] [data-reveal="left"]:not([data-shown]) {
+  transform: translateX(-48px);
+}
+[data-reveal-armed] [data-reveal="right"]:not([data-shown]) {
+  transform: translateX(48px);
+}
+[data-reveal-armed] [data-reveal="grow"]:not([data-shown]) {
+  opacity: 1;
+  transform: scaleX(0);
+}
+[data-reveal-armed] [data-reveal="curtain"]:not([data-shown]) {
+  opacity: 1;
+  transform: none;
+}
+
+/* Ảnh mở ra như kéo rèm: hai tấm vải xếp nếp co dần về hai bên, ảnh thu nhẹ về đúng cỡ */
+.curtain-panel {
+  background-color: var(--brand-dark);
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.1) 0,
+    rgb(255 255 255 / 0) 9px,
+    rgb(0 0 0 / 0.2) 18px,
+    rgb(255 255 255 / 0.1) 28px
+  );
+  transform: scaleX(0);
+  transition: transform 1.3s cubic-bezier(0.76, 0, 0.24, 1) calc(var(--reveal-delay, 0ms) + 200ms);
+}
+[data-curtain-zoom] {
+  transition: transform 2s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--reveal-delay, 0ms) + 200ms);
+}
+[data-reveal-armed] [data-reveal]:not([data-shown]) .curtain-panel {
+  transform: scaleX(1);
+}
+[data-reveal-armed] [data-reveal]:not([data-shown]) [data-curtain-zoom] {
+  transform: scale(1.15);
+}
+
+/* Phần tử con gắn data-pop (vd. sao đánh giá) bật lên lần lượt sau khi khối chứa xuất hiện; thứ tự qua --pop-i */
+[data-reveal-armed] [data-reveal]:not([data-shown]) [data-pop] {
+  opacity: 0;
+}
+[data-reveal-armed] [data-shown] [data-pop] {
+  animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(var(--reveal-delay, 0ms) + 350ms + var(--pop-i, 0) * 90ms);
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3) rotate(-40deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .curtain-panel,
+  [data-curtain-zoom] {
+    transition: none;
+  }
+}
+
+/* ---------- Thanh tiến độ đọc trang dưới header (CSS scroll-driven, không cần JS) ----------
+   Trình duyệt chưa hỗ trợ animation-timeline → ẩn. */
+.scroll-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    transform: scaleX(0);
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes scroll-progress {
+  to {
+    transform: scaleX(1);
+  }
 }

@@ -7,6 +7,7 @@ import { BrandLogo } from "@/components/public/brand-logo";
 import { NavLinks } from "@/components/public/nav-links";
 import { MobileMenu } from "@/components/public/mobile-menu";
 import { SocialLinks } from "@/components/public/social-icons";
+import { StickyHeader } from "@/components/public/sticky-header";
 
 /** Header trang công khai: thanh thông tin + logo, menu, hotline, CTA "Nhận báo giá" (sticky) */
 export async function SiteHeader() {
@@ -20,7 +21,8 @@ export async function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 shadow-sm">
+    // md+: top âm bằng chiều cao thanh thông tin → thanh này cuộn khuất tự nhiên, thanh chính vẫn dính (không giật layout)
+    <StickyHeader className="group/header sticky top-0 z-40 shadow-sm transition-shadow duration-300 data-scrolled:shadow-lg data-scrolled:shadow-brand-dark/10 md:-top-9">
       {/* Thanh thông tin trên cùng – chỉ hiện trên màn hình lớn */}
       <div className="hidden bg-brand-dark text-xs text-white/85 md:block">
         <div className="container-page flex h-9 items-center justify-between gap-4">
@@ -51,7 +53,9 @@ export async function SiteHeader() {
       </div>
 
       {/* Thanh chính */}
-      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
+      <div className="relative border-b bg-background/95 backdrop-blur transition-colors duration-300 supports-[backdrop-filter]:bg-background/90 group-data-scrolled/header:border-transparent supports-[backdrop-filter]:group-data-scrolled/header:bg-background/80">
+        {/* Thanh tiến độ đọc trang */}
+        <div aria-hidden="true" className="scroll-progress absolute inset-x-0 -bottom-px h-0.5 origin-left bg-gradient-to-r from-cta via-amber-300 to-primary" />
         <div className="container-page flex h-16 items-center justify-between gap-3 md:h-[4.5rem]">
           {/* Logo ngang đã có tên thương hiệu → không hiện thêm tên công ty bên cạnh (tránh tràn header ở 768–1023px) */}
           <BrandLogo logo={s.logo} companyName={s.companyName} shortName={s.shortName} showName={false} />
@@ -67,8 +71,9 @@ export async function SiteHeader() {
               href={telHref(s.hotline)}
               className="hidden shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-primary/20 bg-brand-light py-1.5 pl-1.5 pr-4 text-primary transition-colors hover:bg-primary hover:text-primary-foreground md:flex lg:hidden min-[73.75rem]:flex"
             >
-              <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Phone className="size-4" />
+              <span className="relative flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <span aria-hidden="true" className="absolute inset-0 animate-soft-ping rounded-full bg-primary/50 motion-reduce:hidden" />
+                <Phone className="relative size-4 animate-ring motion-reduce:animate-none" />
               </span>
               <span className="leading-tight">
                 <span className="hidden text-[10px] font-medium uppercase tracking-wide opacity-80 2xl:block">Hotline tư vấn</span>
@@ -81,15 +86,21 @@ export async function SiteHeader() {
                 <Phone className="size-5" />
               </a>
             </Button>
-            <Button asChild size="lg" className="hidden h-11 shrink-0 whitespace-nowrap bg-cta px-5 font-semibold text-cta-foreground hover:bg-cta-hover sm:inline-flex">
+            <Button
+              asChild
+              size="lg"
+              className="group relative hidden h-11 shrink-0 overflow-hidden whitespace-nowrap bg-cta px-5 font-semibold text-cta-foreground shadow-md shadow-cta/30 hover:-translate-y-0.5 hover:bg-cta-hover hover:shadow-lg hover:shadow-cta/40 sm:inline-flex"
+            >
               <Link href="/bao-gia">
-                <Send className="size-4" /> Nhận báo giá
+                {/* Vệt sáng lướt qua định kỳ */}
+                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-1/3 animate-shine bg-gradient-to-r from-transparent via-white/60 to-transparent motion-reduce:hidden" />
+                <Send className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> Nhận báo giá
               </Link>
             </Button>
             <MobileMenu logo={s.logo} companyName={s.companyName} shortName={s.shortName} hotline={s.hotline} social={social} />
           </div>
         </div>
       </div>
-    </header>
+    </StickyHeader>
   );
 }

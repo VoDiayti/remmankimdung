@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { Quote, Star } from "lucide-react";
+import type { CSSProperties } from "react";
 import type { Testimonial } from "@/db/types";
+import { gridRevealDelay } from "@/lib/reveal";
+import { RevealSection } from "@/components/public/reveal";
 import { SectionHeading } from "@/components/public/section-heading";
 import { cn } from "@/lib/utils";
 
@@ -17,11 +20,19 @@ function initials(name: string) {
 
 export function TestimonialCard({ t, className }: { t: TestimonialData; className?: string }) {
   return (
-    <figure className={cn("flex h-full flex-col rounded-2xl border bg-card p-6 shadow-sm", className)}>
-      <Quote className="size-8 text-cta/40" aria-hidden="true" />
+    <figure
+      className={cn(
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/25 hover:shadow-xl hover:shadow-brand-dark/10",
+        className
+      )}
+    >
+      {/* Vạch màu chạy ngang mép trên khi rê chuột */}
+      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-cta via-amber-300 to-primary transition-transform duration-500 group-hover:scale-x-100" />
+      <Quote className="size-9 origin-top-left text-cta/40 transition-all duration-500 group-hover:rotate-[-8deg] group-hover:scale-110 group-hover:text-cta/70" aria-hidden="true" />
       <div className="mt-2 flex gap-0.5" aria-label={`${t.rating} trên 5 sao`}>
         {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className={cn("size-4", i < t.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")} />
+          // data-pop: sao bật lên lần lượt khi thẻ hiện ra (trong RevealSection)
+          <Star key={i} data-pop style={{ "--pop-i": i } as CSSProperties} className={cn("size-4", i < t.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")} />
         ))}
       </div>
       <blockquote className="mt-3 flex-1 text-[15px] leading-relaxed text-foreground/90">“{t.content}”</blockquote>
@@ -46,19 +57,24 @@ export function TestimonialCard({ t, className }: { t: TestimonialData; classNam
 export function TestimonialsSection({ testimonials }: { testimonials: TestimonialData[] }) {
   if (testimonials.length === 0) return null;
   return (
-    <section className="bg-brand-light py-14 md:py-20">
-      <div className="container-page">
+    <RevealSection className="relative overflow-hidden bg-brand-light py-16 md:py-24">
+      <div aria-hidden="true" className="pointer-events-none absolute -left-32 top-10 size-96 animate-glow rounded-full bg-white/70 blur-3xl motion-reduce:animate-none" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-cta/10 blur-3xl" />
+      <div className="container-page relative">
         <SectionHeading
           label="Cảm nhận"
           title="Khách hàng nói gì về chúng tôi"
           description="Hàng nghìn gia đình, văn phòng và cửa hàng đã tin chọn chúng tôi để làm đẹp không gian sống và làm việc."
         />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <TestimonialCard key={t.id} t={t} />
+        {/* flex-wrap + justify-center: hàng cuối thiếu thẻ vẫn được căn giữa */}
+        <div className="flex flex-wrap justify-center gap-6">
+          {testimonials.map((t, i) => (
+            <div key={t.id} data-reveal style={gridRevealDelay(i, 3, 120)} className="w-full md:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]">
+              <TestimonialCard t={t} />
+            </div>
           ))}
         </div>
       </div>
-    </section>
+    </RevealSection>
   );
 }

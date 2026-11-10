@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays } from "lucide-react";
+import { ArrowRight, CalendarDays } from "lucide-react";
 import { formatDate } from "@/lib/format";
 import type { PostCardData } from "@/lib/queries/posts";
 import { cn } from "@/lib/utils";
@@ -39,7 +39,7 @@ export function PostCard({ post, variant = "vertical", className, priority }: Po
   }
 
   return (
-    <article className={cn("group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg", className)}>
+    <article className={cn("group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/25 hover:shadow-xl hover:shadow-brand-dark/10", className)}>
       <Link href={href} className="relative block aspect-[16/10] overflow-hidden bg-muted" aria-label={post.title}>
         {post.coverImage ? (
           <Image
@@ -48,13 +48,13 @@ export function PostCard({ post, variant = "vertical", className, priority }: Po
             fill
             priority={priority}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-brand-dark" />
         )}
         {post.category && (
-          <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground shadow-sm">{post.category.name}</span>
+          <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground shadow-sm transition-colors duration-300 group-hover:bg-cta group-hover:text-cta-foreground">{post.category.name}</span>
         )}
       </Link>
       <div className="flex flex-1 flex-col p-5">
@@ -63,14 +63,14 @@ export function PostCard({ post, variant = "vertical", className, priority }: Po
             <CalendarDays className="size-3.5" /> {formatDate(post.publishedAt)}
           </p>
         )}
-        <h3 className="line-clamp-2 text-base font-bold leading-snug md:text-lg">
+        <h3 className="line-clamp-2 text-base font-bold leading-snug transition-colors group-hover:text-primary md:text-lg">
           <Link href={href} className="hover:text-primary">
             {post.title}
           </Link>
         </h3>
         {post.excerpt && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>}
-        <Link href={href} className="mt-auto inline-flex pt-4 text-sm font-semibold text-primary hover:underline">
-          Đọc tiếp →
+        <Link href={href} className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-semibold text-primary">
+          Đọc tiếp <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       </div>
     </article>

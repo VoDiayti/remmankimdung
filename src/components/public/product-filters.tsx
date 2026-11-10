@@ -124,11 +124,15 @@ export function ProductFilters({ categories, lines }: ProductFiltersProps) {
   };
 
   return (
-    <div className="rounded-2xl border bg-card p-4 shadow-sm md:p-5">
+    <div className="relative overflow-hidden rounded-2xl border bg-card p-4 shadow-lg shadow-brand-dark/5 md:p-5">
+      <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cta via-amber-300 to-primary" />
       <div className="mb-4 flex items-center justify-between gap-3">
-        <p className="inline-flex items-center gap-2 font-semibold">
-          <Funnel className="size-4 text-primary" /> Lọc sản phẩm
-          {activeCount > 0 && <span className="rounded-full bg-cta px-2 py-0.5 text-xs font-bold text-cta-foreground">{activeCount}</span>}
+        <p className="inline-flex items-center gap-2.5 font-semibold text-brand-dark">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-brand-light text-primary">
+            <Funnel className="size-4" />
+          </span>
+          Lọc sản phẩm
+          {activeCount > 0 && <span className="animate-in zoom-in rounded-full bg-cta px-2 py-0.5 text-xs font-bold text-cta-foreground duration-300">{activeCount}</span>}
         </p>
         {activeCount > 0 && (
           <Button type="button" variant="ghost" size="sm" onClick={() => setParams(Object.fromEntries(PRODUCT_FILTER_KEYS.map((k) => [k, null])))}>

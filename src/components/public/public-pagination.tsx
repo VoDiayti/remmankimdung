@@ -36,7 +36,7 @@ export function PublicPagination({ page, totalPages, pathname, query = {}, class
     pages.push(totalPages);
   }
 
-  const navClass = cn(buttonVariants({ variant: "outline", size: "default" }), "h-10 gap-1 px-3");
+  const navClass = cn(buttonVariants({ variant: "outline", size: "default" }), "h-10 gap-1 px-3 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary");
 
   return (
     <nav role="navigation" aria-label="Phân trang" className={cn("flex items-center justify-center gap-1.5", className)}>
@@ -59,7 +59,11 @@ export function PublicPagination({ page, totalPages, pathname, query = {}, class
             key={p}
             href={href(p)}
             aria-current={p === page ? "page" : undefined}
-            className={cn(buttonVariants({ variant: p === page ? "default" : "ghost", size: "icon" }), "size-10", p === page && "pointer-events-none")}
+            className={cn(
+              buttonVariants({ variant: p === page ? "default" : "ghost", size: "icon" }),
+              "size-10",
+              p === page ? "pointer-events-none shadow-md shadow-primary/30" : "hover:-translate-y-0.5 hover:bg-background hover:text-primary hover:shadow-sm"
+            )}
           >
             {p}
           </Link>

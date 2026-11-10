@@ -31,7 +31,7 @@ export function ServiceIcon({ name, className }: { name: string | null | undefin
 export function ServiceCard({ service, className }: { service: ServiceCardData; className?: string }) {
   const href = `/dich-vu/${service.slug}`;
   return (
-    <article className={cn("group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg", className)}>
+    <article className={cn("group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/25 hover:shadow-xl hover:shadow-brand-dark/10", className)}>
       <Link href={href} className="relative block aspect-[16/10] overflow-hidden bg-muted" aria-label={service.title}>
         {service.image ? (
           <Image
@@ -39,17 +39,17 @@ export function ServiceCard({ service, className }: { service: ServiceCardData; 
             alt={service.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-brand-dark" />
         )}
-        <span className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-xl bg-white/95 text-primary shadow-sm">
+        <span className="absolute left-4 top-4 flex size-11 items-center justify-center rounded-xl bg-white/95 text-primary shadow-sm transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg">
           <ServiceIcon name={service.icon} className="size-5" />
         </span>
       </Link>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="line-clamp-2 text-base font-bold leading-snug md:text-lg">
+        <h3 className="line-clamp-2 text-base font-bold leading-snug transition-colors group-hover:text-primary md:text-lg">
           <Link href={href} className="hover:text-primary">
             {service.title}
           </Link>
@@ -69,8 +69,8 @@ export function ServiceCard({ service, className }: { service: ServiceCardData; 
             </li>
           )}
         </ul>
-        <Link href={href} className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-semibold text-primary group-hover:gap-2">
-          Xem chi tiết dịch vụ <ArrowRight className="size-4 transition-transform" />
+        <Link href={href} className="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-semibold text-primary">
+          Xem chi tiết dịch vụ <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
       </div>
     </article>

@@ -10,6 +10,7 @@ import { getLatestPosts } from "@/lib/queries/posts";
 import { getActiveBanners, getActivePartners, getActiveTestimonials } from "@/lib/queries/site-content";
 import { buildMetadata } from "@/lib/seo";
 import { telHref } from "@/lib/format";
+import { gridRevealDelay, revealDelay } from "@/lib/reveal";
 import { youtubeVideoId } from "@/components/shared/youtube";
 import { Button } from "@/components/ui/button";
 import { HeroSlider } from "@/components/public/hero-slider";
@@ -26,6 +27,8 @@ import { PartnersSection } from "@/components/public/partners-section";
 import { LeadForm } from "@/components/public/lead-form";
 import { PublicEmptyState } from "@/components/public/empty-state";
 import { YouTubeEmbed } from "@/components/public/youtube-embed";
+import { AboutSection } from "@/components/public/about-section";
+import { RevealSection } from "@/components/public/reveal";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +48,17 @@ const TRUST_POINTS = [
   { Icon: Clock, title: "Lắp đặt trong 3 – 5 ngày", text: "May đúng kích thước thực tế, đội thi công lắp đặt gọn gàng, đúng hẹn." },
   { Icon: ShieldCheck, title: "Bảo hành đến 24 tháng, bảo trì trọn đời", text: "Bảo hành phụ kiện, thanh ray; hỗ trợ chỉnh sửa, bảo trì suốt thời gian sử dụng." },
 ];
+
+/** Link "Xem tất cả …" cạnh tiêu đề section: mũi tên trượt khi rê chuột */
+function SeeAllLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Button asChild variant="link" data-reveal style={revealDelay(200)} className="group h-auto justify-start px-0 text-base font-semibold md:justify-end">
+      <Link href={href}>
+        {children} <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+      </Link>
+    </Button>
+  );
+}
 
 export default async function HomePage() {
   const [s, banners, categories, products, services, posts, testimonials, partners, categoryOptions, priceTable] = await Promise.all([
@@ -82,18 +96,20 @@ export default async function HomePage() {
     <>
       <HeroSlider banners={heroBanners} hotline={s.hotline} />
 
-      {/* Điểm tin cậy */}
+      {/* Điểm tin cậy: lần lượt hiện lên khi tải trang, từng ô nổi lên khi rê chuột */}
       <section className="relative z-10 -mt-10 md:-mt-12">
         <div className="container-page">
-          <ul className="grid gap-4 rounded-2xl border bg-card p-4 shadow-lg sm:grid-cols-2 lg:grid-cols-4 md:p-6">
-            {TRUST_POINTS.map((p) => (
-              <li key={p.title} className="flex gap-3">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-light text-primary">
-                  <p.Icon className="size-5" />
-                </span>
-                <div>
-                  <p className="font-semibold leading-snug">{p.title}</p>
-                  <p className="mt-0.5 text-sm text-muted-foreground">{p.text}</p>
+          <ul className="grid gap-1 rounded-2xl border border-border/60 bg-card/95 p-2 shadow-xl shadow-brand-dark/10 backdrop-blur sm:grid-cols-2 md:p-3 lg:grid-cols-4 lg:divide-x lg:divide-border/60">
+            {TRUST_POINTS.map((p, i) => (
+              <li key={p.title} className="animate-fade-up motion-reduce:animate-none lg:px-1.5" style={{ animationDelay: `${300 + i * 120}ms` }}>
+                <div className="group flex h-full gap-3.5 rounded-xl p-3 transition-all duration-300 hover:-translate-y-1 hover:bg-brand-light/70 md:p-4">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-light text-primary ring-1 ring-primary/10 transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-lg group-hover:shadow-primary/30">
+                    <p.Icon className="size-5" />
+                  </span>
+                  <div>
+                    <p className="font-semibold leading-snug text-brand-dark transition-colors duration-300 group-hover:text-primary">{p.title}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{p.text}</p>
+                  </div>
                 </div>
               </li>
             ))}
@@ -105,137 +121,103 @@ export default async function HomePage() {
       {s.priceTableEnabled && <PriceTableSection title={s.priceTableTitle || "Bảng giá rèm cửa tham khảo"} groups={priceTable} />}
 
       {/* Giới thiệu ngắn */}
-      <section className="bg-background py-14 md:py-20">
-        <div className="container-page grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-xl">
-              <Image src="/images/about-showroom.jpg" alt={`Showroom rèm cửa ${storeName}`} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
-            </div>
-            <div className="absolute -bottom-6 -right-2 hidden w-56 overflow-hidden rounded-2xl border-4 border-background shadow-xl sm:block md:-right-6">
-              <div className="relative aspect-[4/3]">
-                <Image src="/images/about-lap-dat.jpg" alt="Kỹ thuật viên lắp đặt rèm cửa" fill sizes="224px" className="object-cover" />
-              </div>
-            </div>
-            {s.statYears && (
-              <div className="absolute -left-2 top-6 rounded-2xl bg-cta px-4 py-3 text-cta-foreground shadow-lg md:-left-6">
-                <p className="text-3xl font-extrabold leading-none">{s.statYears}+</p>
-                <p className="text-xs font-medium">năm kinh nghiệm</p>
-              </div>
-            )}
-          </div>
-          <div>
-            <SectionHeading align="left" label="Về chúng tôi" title={s.companyName} className="mb-5" />
-            {s.aboutShort && <p className="text-base leading-relaxed text-muted-foreground md:text-lg">{s.aboutShort}</p>}
-            {s.warrantyText && (
-              <div className="mt-6 flex items-start gap-3 rounded-2xl border border-primary/15 bg-brand-light p-4">
-                <ShieldCheck className="mt-0.5 size-6 shrink-0 text-primary" />
-                <div>
-                  <p className="font-semibold text-brand-dark">Cam kết bảo hành</p>
-                  <p className="text-sm text-muted-foreground">{s.warrantyText}</p>
-                </div>
-              </div>
-            )}
-            <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
-              {["Xưởng may riêng, giá tận gốc", "Hơn 500 mẫu vải – chất liệu có sẵn", "Thi công đúng hẹn, dọn dẹp sạch sẽ", "Bảo trì trọn đời sản phẩm"].map((t) => (
-                <li key={t} className="flex items-center gap-2 text-sm font-medium">
-                  <CircleCheck className="size-5 shrink-0 text-emerald-600" /> {t}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="h-12 px-6 text-base">
-                <Link href="/gioi-thieu">
-                  Tìm hiểu thêm <ArrowRight className="size-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="h-12 px-6 text-base">
-                <a href={telHref(s.hotline)}>
-                  <Phone className="size-5" /> {s.hotline}
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AboutSection
+        companyName={s.companyName}
+        aboutShort={s.aboutShort}
+        warrantyText={s.warrantyText}
+        statYears={s.statYears}
+        statCustomers={s.statCustomers}
+        hotline={s.hotline}
+        storeName={storeName}
+      />
 
       {/* Video giới thiệu (chỉ khi có link trong Cài đặt): vắt ngang ranh giới nền trắng và nền nhạt */}
       {videoId && (
-        <div className="bg-[linear-gradient(to_bottom,var(--background)_50%,var(--brand-light)_50%)]">
+        <RevealSection className="bg-[linear-gradient(to_bottom,var(--background)_50%,var(--brand-light)_50%)]">
           <div className="container-page">
-            <YouTubeEmbed videoId={videoId} title={`Video giới thiệu ${s.companyName}`} className="mx-auto max-w-3xl border-4 border-background shadow-2xl" />
+            <div data-reveal="zoom">
+              <YouTubeEmbed videoId={videoId} title={`Video giới thiệu ${s.companyName}`} className="mx-auto max-w-3xl border-4 border-background shadow-2xl" />
+            </div>
           </div>
-        </div>
+        </RevealSection>
       )}
 
       {/* Danh mục rèm */}
-      <section className="bg-brand-light py-14 md:py-20">
-        <div className="container-page">
+      <RevealSection className="relative overflow-hidden bg-brand-light py-16 md:py-24">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-24 -top-24 size-96 rounded-full bg-white/70 blur-3xl" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-6 right-0 h-48 w-56 bg-[radial-gradient(var(--color-primary)_1.5px,transparent_1.5px)] [background-size:16px_16px] opacity-20" />
+        <div className="container-page relative">
           <SectionHeading
             label="Danh mục"
             title="Danh mục rèm cửa"
             description="Rèm vải, rèm cuốn, rèm cầu vồng, rèm roman, rèm sáo gỗ – nhôm, rèm văn phòng… Mỗi danh mục đều có nhiều loại và mức giá để bạn lựa chọn."
           />
           {categories.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            // flex-wrap + justify-center: hàng cuối thiếu thẻ vẫn được căn giữa
+            <div className="flex flex-wrap justify-center gap-6">
               {categories.map((c, i) => (
-                <CategoryCard key={c.id} category={c} priority={i < 4} />
+                <div
+                  key={c.id}
+                  data-reveal
+                  style={gridRevealDelay(i)}
+                  className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-4.5rem)/4)]"
+                >
+                  <CategoryCard category={c} priority={i < 4} className="h-full" />
+                </div>
               ))}
             </div>
           ) : (
             <PublicEmptyState title="Danh mục rèm đang được cập nhật" />
           )}
-          <div className="mt-10 text-center">
-            <Button asChild variant="outline" size="lg" className="h-12 bg-background px-6 text-base">
+          <div data-reveal className="mt-10 text-center">
+            <Button asChild variant="outline" size="lg" className="group h-12 bg-background px-6 text-base hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
               <Link href="/danh-muc">
-                Xem tất cả danh mục <ArrowRight className="size-5" />
+                Xem tất cả danh mục <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* Sản phẩm nổi bật */}
-      <section className="bg-background py-14 md:py-20">
+      <RevealSection className="bg-background py-16 md:py-24">
         <div className="container-page">
           <div className="mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
             <SectionHeading align="left" label="Sản phẩm" title="Mẫu rèm nổi bật" description="Những mẫu rèm được khách hàng chọn nhiều nhất – chất liệu đẹp, giá tốt, có sẵn vải." className="mb-0" />
-            <Button asChild variant="link" className="h-auto justify-start px-0 text-base font-semibold md:justify-end">
-              <Link href="/san-pham">
-                Xem tất cả sản phẩm <ArrowRight className="size-4" />
-              </Link>
-            </Button>
+            <SeeAllLink href="/san-pham">Xem tất cả sản phẩm</SeeAllLink>
           </div>
           {products.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {products.map((p) => (
-                <ProductCard key={p.id} product={p} />
+              {products.map((p, i) => (
+                <div key={p.id} data-reveal style={gridRevealDelay(i, 3, 120)}>
+                  <ProductCard product={p} className="h-full" />
+                </div>
               ))}
             </div>
           ) : (
             <PublicEmptyState title="Sản phẩm đang được cập nhật" description="Hãy để lại thông tin để được tư vấn mẫu rèm phù hợp." />
           )}
         </div>
-      </section>
+      </RevealSection>
 
       {/* Dịch vụ */}
       {services.length > 0 && (
-        <section className="bg-brand-light py-14 md:py-20">
-          <div className="container-page">
+        <RevealSection className="relative overflow-hidden bg-brand-light py-16 md:py-24">
+          <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-96 rounded-full bg-white/70 blur-3xl" />
+          <div className="container-page relative">
             <div className="mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
               <SectionHeading align="left" label="Dịch vụ" title="Dịch vụ trọn gói từ đo đạc đến bảo hành" className="mb-0" />
-              <Button asChild variant="link" className="h-auto justify-start px-0 text-base font-semibold md:justify-end">
-                <Link href="/dich-vu">
-                  Xem tất cả dịch vụ <ArrowRight className="size-4" />
-                </Link>
-              </Button>
+              <SeeAllLink href="/dich-vu">Xem tất cả dịch vụ</SeeAllLink>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {services.slice(0, 4).map((sv) => (
-                <ServiceCard key={sv.id} service={sv} />
+              {services.slice(0, 4).map((sv, i) => (
+                <div key={sv.id} data-reveal style={gridRevealDelay(i)}>
+                  <ServiceCard service={sv} className="h-full" />
+                </div>
               ))}
             </div>
           </div>
-        </section>
+        </RevealSection>
       )}
 
       <StatsSection statCustomers={s.statCustomers} statYears={s.statYears} statProjects={s.statProjects} statProducts={s.statProducts} />
@@ -246,59 +228,74 @@ export default async function HomePage() {
 
       {/* Tin tức */}
       {posts.length > 0 && (
-        <section className="bg-background py-14 md:py-20">
+        <RevealSection className="bg-background py-16 md:py-24">
           <div className="container-page">
             <div className="mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
               <SectionHeading align="left" label="Tin tức" title="Kinh nghiệm chọn rèm & công trình mới" className="mb-0" />
-              <Button asChild variant="link" className="h-auto justify-start px-0 text-base font-semibold md:justify-end">
-                <Link href="/tin-tuc">
-                  Xem tất cả tin tức <ArrowRight className="size-4" />
-                </Link>
-              </Button>
+              <SeeAllLink href="/tin-tuc">Xem tất cả tin tức</SeeAllLink>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {posts.map((p) => (
-                <PostCard key={p.id} post={p} />
+              {posts.map((p, i) => (
+                <div key={p.id} data-reveal style={gridRevealDelay(i)}>
+                  <PostCard post={p} className="h-full" />
+                </div>
               ))}
             </div>
           </div>
-        </section>
+        </RevealSection>
       )}
 
       {/* Form báo giá nhanh */}
-      <section id="bao-gia" className="relative overflow-hidden bg-brand-dark py-14 text-white md:py-20">
+      {/* Cột trái trượt vào từ trái, form trượt vào từ phải; form có viền sáng phập phồng */}
+      <RevealSection id="bao-gia" className="relative overflow-hidden bg-brand-dark py-16 text-white md:py-24">
         <Image src="/images/cta-bg.jpg" alt="" fill sizes="100vw" className="object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/95 to-primary/70" />
+        <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-96 animate-glow rounded-full bg-cta/20 blur-3xl motion-reduce:animate-none" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 left-1/4 size-96 animate-glow rounded-full bg-primary/40 blur-3xl [animation-delay:-3.5s] motion-reduce:animate-none" />
         <div className="container-page relative grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-amber-300">Nhận báo giá</p>
-            <h2 className="mt-2 text-2xl font-bold md:text-4xl">Đo đạc tận nơi miễn phí – báo giá trong giờ làm việc</h2>
-            <p className="mt-4 text-white/85 md:text-lg">
+            <p data-reveal className="flex items-center gap-3 text-sm font-semibold uppercase tracking-wider text-amber-300">
+              <span aria-hidden="true" data-reveal="grow" style={revealDelay(250)} className="h-0.5 w-8 origin-left rounded-full bg-amber-300" />
+              Nhận báo giá
+            </p>
+            <h2 data-reveal style={revealDelay(80)} className="mt-3 text-balance text-2xl font-bold md:text-4xl">
+              Đo đạc tận nơi miễn phí – báo giá trong giờ làm việc
+            </h2>
+            <p data-reveal style={revealDelay(160)} className="mt-4 text-white/85 md:text-lg">
               Để lại số điện thoại, nhân viên sẽ gọi lại xác nhận lịch đo đạc, mang mẫu vải đến tận nhà và gửi báo giá chi tiết theo m². Hoàn toàn miễn phí, không ràng buộc.
             </p>
             <ul className="mt-6 space-y-3">
-              {["Tư vấn kiểu rèm, chất liệu hợp nội thất và ngân sách", "Đo kích thước cửa chính xác, báo giá không phát sinh", "May tại xưởng, lắp đặt trong 3 – 5 ngày", s.warrantyText || "Bảo hành đến 24 tháng, bảo trì trọn đời"].map((t) => (
-                <li key={t} className="flex items-start gap-2.5">
+              {["Tư vấn kiểu rèm, chất liệu hợp nội thất và ngân sách", "Đo kích thước cửa chính xác, báo giá không phát sinh", "May tại xưởng, lắp đặt trong 3 – 5 ngày", s.warrantyText || "Bảo hành đến 24 tháng, bảo trì trọn đời"].map((t, i) => (
+                <li key={t} data-reveal="left" style={revealDelay(250 + i * 100)} className="flex items-start gap-2.5">
                   <CircleCheck className="mt-0.5 size-5 shrink-0 text-amber-300" />
                   <span>{t}</span>
                 </li>
               ))}
             </ul>
-            <a href={telHref(s.hotline)} className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 backdrop-blur hover:bg-white/15">
-              <span className="flex size-11 items-center justify-center rounded-full bg-cta text-cta-foreground">
-                <Phone className="size-5" />
-              </span>
-              <span>
-                <span className="block text-xs text-white/70">Hoặc gọi ngay hotline</span>
-                <span className="block text-xl font-bold">{s.hotline}</span>
-              </span>
-            </a>
+            <div data-reveal style={revealDelay(650)}>
+              <a
+                href={telHref(s.hotline)}
+                className="group mt-8 inline-flex items-center gap-3 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-300/50 hover:bg-white/15 hover:shadow-xl hover:shadow-black/20"
+              >
+                <span className="relative flex size-11 items-center justify-center rounded-full bg-cta text-cta-foreground">
+                  <span aria-hidden="true" className="absolute inset-0 animate-soft-ping rounded-full bg-cta/60 motion-reduce:hidden" />
+                  <Phone className="relative size-5 animate-ring motion-reduce:animate-none" />
+                </span>
+                <span>
+                  <span className="block text-xs text-white/70">Hoặc gọi ngay hotline</span>
+                  <span className="block text-xl font-bold transition-colors group-hover:text-amber-300">{s.hotline}</span>
+                </span>
+              </a>
+            </div>
           </div>
-          <div className="rounded-3xl bg-background p-6 text-foreground shadow-2xl sm:p-8">
-            <LeadForm type="QUOTE" categories={categoryOptions} variant="compact" storeName={storeName} title="Nhận báo giá miễn phí" description="Điền thông tin, chúng tôi sẽ gọi lại trong giờ làm việc." />
+          <div data-reveal="right" style={revealDelay(200)} className="relative">
+            <div aria-hidden="true" className="absolute -inset-1.5 animate-pulse rounded-[1.9rem] bg-gradient-to-br from-cta via-amber-300/60 to-primary opacity-60 blur-lg [animation-duration:4s] motion-reduce:animate-none" />
+            <div className="relative rounded-3xl bg-background p-6 text-foreground shadow-2xl sm:p-8">
+              <LeadForm type="QUOTE" categories={categoryOptions} variant="compact" storeName={storeName} title="Nhận báo giá miễn phí" description="Điền thông tin, chúng tôi sẽ gọi lại trong giờ làm việc." />
+            </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       <PartnersSection partners={partners} />
     </>

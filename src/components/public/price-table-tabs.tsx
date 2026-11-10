@@ -22,7 +22,7 @@ export function PriceTableTabs({ groups }: { groups: PriceTableGroup[] }) {
             <TabsTrigger
               key={g.slug}
               value={g.slug}
-              className="h-12 flex-none rounded-none border-0 px-4 text-xs font-semibold uppercase tracking-wide text-white/80 shadow-none hover:text-white data-[state=active]:bg-cta data-[state=active]:text-cta-foreground data-[state=active]:shadow-none md:px-6 md:text-sm"
+              className="h-12 flex-none rounded-none border-0 px-4 text-xs font-semibold uppercase tracking-wide text-white/80 shadow-none transition-colors duration-300 hover:bg-white/10 hover:text-white data-[state=active]:bg-cta data-[state=active]:text-cta-foreground data-[state=active]:shadow-none md:px-6 md:text-sm"
             >
               {g.name}
               <span className="ml-1.5 rounded-full bg-white/15 px-1.5 py-0.5 text-[10px] font-bold tabular-nums">{g.total}</span>
@@ -32,7 +32,8 @@ export function PriceTableTabs({ groups }: { groups: PriceTableGroup[] }) {
       </div>
 
       {groups.map((g) => (
-        <TabsContent key={g.slug} value={g.slug} className="mt-0">
+        // Đổi tab: nội dung hiện mờ dần + trượt nhẹ lên
+        <TabsContent key={g.slug} value={g.slug} className="mt-0 animate-in fade-in slide-in-from-bottom-2 duration-500 motion-reduce:animate-none">
           {/* Điện thoại: mỗi sản phẩm là một thẻ xếp dọc */}
           <ul className="divide-y md:hidden">
             {g.rows.map((r) => (
@@ -73,7 +74,7 @@ export function PriceTableTabs({ groups }: { groups: PriceTableGroup[] }) {
               </thead>
               <tbody>
                 {g.rows.map((r) => (
-                  <tr key={r.id} className="border-t transition-colors hover:bg-brand-light/50">
+                  <tr key={r.id} className="border-t transition-colors hover:bg-brand-light/60 [&>td:first-child]:border-l-2 [&>td:first-child]:border-transparent hover:[&>td:first-child]:border-cta">
                     <td className="px-4 py-3 md:px-5">
                       <Link href={`/san-pham/${r.slug}`} className="inline-flex items-start gap-1.5 font-semibold leading-snug text-foreground hover:text-primary">
                         {r.isFeatured && <Star className="mt-0.5 size-3.5 shrink-0 fill-cta text-cta" aria-label="Nổi bật" />}

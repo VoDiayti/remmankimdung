@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Layers, Ruler, ShieldCheck, Star } from "lucide-react";
+import { ArrowRight, Layers, Ruler, ShieldCheck, Star } from "lucide-react";
 import type { ProductCardData } from "@/lib/queries/products";
 import { formatPriceRange } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +13,7 @@ export function ProductCard({ product, className, priority }: { product: Product
   const price = formatPriceRange(product.priceFrom, product.priceTo, product.priceUnit);
 
   return (
-    <article className={cn("group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg", className)}>
+    <article className={cn("group flex flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/25 hover:shadow-xl hover:shadow-brand-dark/10", className)}>
       <Link href={href} className="relative block aspect-[4/3] overflow-hidden bg-muted" aria-label={product.name}>
         {product.image ? (
           <Image
@@ -22,11 +22,18 @@ export function ProductCard({ product, className, priority }: { product: Product
             fill
             priority={priority}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-primary to-brand-dark" />
         )}
+        {/* Rê chuột: ảnh tối nhẹ, nút "Xem chi tiết" trượt lên */}
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/60 via-brand-dark/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <span className="absolute inset-x-0 bottom-4 flex translate-y-3 justify-center opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-brand-dark shadow-lg">
+            Xem chi tiết <ArrowRight className="size-4" />
+          </span>
+        </span>
         <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
           <Badge className="bg-white/95 text-foreground shadow-sm hover:bg-white">{product.category.name}</Badge>
         </div>
@@ -77,7 +84,7 @@ export function ProductCard({ product, className, priority }: { product: Product
               </p>
             ) : null}
           </div>
-          <Button asChild size="sm" className="h-9 shrink-0 bg-cta text-cta-foreground hover:bg-cta-hover">
+          <Button asChild size="sm" className="h-9 shrink-0 bg-cta text-cta-foreground shadow-sm shadow-cta/30 hover:-translate-y-0.5 hover:bg-cta-hover hover:shadow-md">
             <Link href={`${href}#bao-gia`}>Báo giá</Link>
           </Button>
         </div>

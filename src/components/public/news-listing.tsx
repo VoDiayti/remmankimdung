@@ -10,6 +10,8 @@ import { PostCard } from "@/components/public/post-card";
 import { NewsSidebar } from "@/components/public/news-sidebar";
 import { PublicPagination } from "@/components/public/public-pagination";
 import { PublicEmptyState } from "@/components/public/empty-state";
+import { RevealSection } from "@/components/public/reveal";
+import { listItemReveal } from "@/lib/reveal";
 
 type NewsListingProps = {
   title: string;
@@ -37,8 +39,9 @@ export async function NewsListing({ title, description, crumbs, pathname, q, pag
   return (
     <>
       <PageHero title={title} description={description} crumbs={crumbs} />
-      <section className="bg-muted py-10 md:py-14">
-        <div className="container-page grid gap-10 lg:grid-cols-3">
+      <RevealSection className="relative overflow-hidden bg-muted py-10 md:py-14">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-32 top-40 size-96 rounded-full bg-brand-light blur-3xl" />
+        <div className="container-page relative grid gap-10 lg:grid-cols-3">
           <div className="space-y-8 lg:col-span-2">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm text-muted-foreground">
@@ -63,7 +66,9 @@ export async function NewsListing({ title, description, crumbs, pathname, q, pag
             {result.items.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2">
                 {result.items.map((p, i) => (
-                  <PostCard key={p.id} post={p} priority={i < 2} />
+                  <div key={p.id} {...listItemReveal(i, 2)}>
+                    <PostCard post={p} priority={i < 2} className="h-full" />
+                  </div>
                 ))}
               </div>
             ) : (
@@ -81,9 +86,18 @@ export async function NewsListing({ title, description, crumbs, pathname, q, pag
             <PublicPagination page={result.page} totalPages={result.totalPages} pathname={pathname} query={{ q }} />
           </div>
 
-          <NewsSidebar categories={categories} featured={featured} products={products} productCategories={productCategories} activeCategorySlug={categorySlug} query={q} hotline={s.hotline} />
+          <NewsSidebar
+            categories={categories}
+            featured={featured}
+            products={products}
+            productCategories={productCategories}
+            activeCategorySlug={categorySlug}
+            query={q}
+            hotline={s.hotline}
+            className="animate-fade-up [animation-delay:400ms] motion-reduce:animate-none"
+          />
         </div>
-      </section>
+      </RevealSection>
     </>
   );
 }

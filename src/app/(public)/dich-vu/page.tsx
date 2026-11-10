@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { getSettings } from "@/lib/queries/settings";
 import { getActiveServices } from "@/lib/queries/services";
 import { buildMetadata } from "@/lib/seo";
+import { listItemReveal } from "@/lib/reveal";
 import { PageHero } from "@/components/public/page-hero";
 import { ServiceCard } from "@/components/public/service-card";
 import { PublicEmptyState } from "@/components/public/empty-state";
 import { ProcessSteps } from "@/components/public/process-steps";
 import { CtaSection } from "@/components/public/cta-section";
+import { RevealSection } from "@/components/public/reveal";
 
 export const dynamic = "force-dynamic";
 
@@ -32,19 +34,23 @@ export default async function ServicesPage() {
         image="/images/service-lap-dat.jpg"
       />
 
-      <section className="bg-muted py-14 md:py-20">
-        <div className="container-page">
+      <RevealSection className="relative overflow-hidden bg-muted py-14 md:py-20">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-32 top-0 size-96 rounded-full bg-brand-light blur-3xl" />
+        <div className="container-page relative">
           {services.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((sv) => (
-                <ServiceCard key={sv.id} service={sv} />
+            // flex-wrap + justify-center: hàng cuối thiếu thẻ vẫn được căn giữa
+            <div className="flex flex-wrap justify-center gap-6">
+              {services.map((sv, i) => (
+                <div key={sv.id} {...listItemReveal(i, 3, "w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]")}>
+                  <ServiceCard service={sv} className="h-full" />
+                </div>
               ))}
             </div>
           ) : (
             <PublicEmptyState title="Dịch vụ đang được cập nhật" description="Vui lòng liên hệ hotline để được hỗ trợ." />
           )}
         </div>
-      </section>
+      </RevealSection>
 
       <ProcessSteps />
 

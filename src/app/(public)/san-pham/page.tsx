@@ -7,6 +7,7 @@ import { getActiveLineLinks } from "@/lib/queries/product-lines";
 import { searchProducts } from "@/lib/queries/products";
 import { paramPage, paramString, type SearchParams } from "@/lib/queries/params";
 import { buildMetadata } from "@/lib/seo";
+import { listItemReveal } from "@/lib/reveal";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/public/page-hero";
 import { ProductFilters } from "@/components/public/product-filters";
@@ -14,6 +15,7 @@ import { ProductCard } from "@/components/public/product-card";
 import { PublicPagination } from "@/components/public/public-pagination";
 import { PublicEmptyState } from "@/components/public/empty-state";
 import { CtaSection } from "@/components/public/cta-section";
+import { RevealSection } from "@/components/public/reveal";
 
 export const dynamic = "force-dynamic";
 
@@ -58,11 +60,15 @@ export default async function ProductsPage({ searchParams }: Props) {
         }
       />
 
-      <section className="bg-muted py-10 md:py-14">
-        <div className="container-page space-y-8">
-          <Suspense fallback={<div className="h-40 animate-pulse rounded-2xl border bg-card" />}>
-            <ProductFilters categories={categories} lines={lines} />
-          </Suspense>
+      {/* Kết quả lọc mới (đổi bộ lọc / trang) cũng hiện lên lần lượt nhờ RevealSection theo dõi phần tử mới */}
+      <RevealSection className="relative overflow-hidden bg-muted py-10 md:py-14">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-40 size-96 rounded-full bg-brand-light blur-3xl" />
+        <div className="container-page relative space-y-8">
+          <div className="animate-fade-up [animation-delay:250ms] motion-reduce:animate-none">
+            <Suspense fallback={<div className="h-40 animate-pulse rounded-2xl border bg-card" />}>
+              <ProductFilters categories={categories} lines={lines} />
+            </Suspense>
+          </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-muted-foreground">
@@ -81,8 +87,13 @@ export default async function ProductsPage({ searchParams }: Props) {
               )}
             </p>
             {activeCategory && (
-              <Button asChild variant="ghost" size="sm">
-                <Link href={`/danh-muc/${activeCategory.slug}`}>Giới thiệu danh mục {activeCategory.name} →</Link>
+              <Button asChild variant="ghost" size="sm" className="group">
+                <Link href={`/danh-muc/${activeCategory.slug}`}>
+                  Giới thiệu danh mục {activeCategory.name}{" "}
+                  <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
               </Button>
             )}
           </div>
@@ -90,7 +101,9 @@ export default async function ProductsPage({ searchParams }: Props) {
           {result.items.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {result.items.map((p, i) => (
-                <ProductCard key={p.id} product={p} priority={i < 3} />
+                <div key={p.id} {...listItemReveal(i, 3)}>
+                  <ProductCard product={p} priority={i < 3} className="h-full" />
+                </div>
               ))}
             </div>
           ) : (
@@ -117,7 +130,7 @@ export default async function ProductsPage({ searchParams }: Props) {
             query={{ "danh-muc": filters.category, loai: filters.line, gia: filters.price, phong: filters.room, q: filters.q }}
           />
         </div>
-      </section>
+      </RevealSection>
 
       <CtaSection hotline={s.hotline} title="Chưa tìm được mẫu rèm ưng ý?" description="Để lại thông tin, nhân viên sẽ mang bộ mẫu vải đầy đủ đến tận nhà cho bạn chọn – đo đạc, tư vấn miễn phí." />
     </>
